@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
   const { openSignIn } = useClerk();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5 bg-black/80 backdrop-blur-md">
@@ -18,7 +18,7 @@ const Navbar = () => {
       </Link>
 
       <div
-        className={`max-md:fixed max-md:top-0 max-md:right-0 max-md:bottom-0 max-md:bg-black max-md:z-50 flex max-md:flex-col items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/25 overflow-hidden transition-[width] duration-300 ${isOpen ? "max-md:w-full" : "max-md:w-0"}`}
+        className={`max-md:fixed max-md:top-0 max-md:right-0 max-md:bottom-0 max-md:bg-black/80 max-md:z-50 flex max-md:flex-col items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/25 overflow-hidden transition-[width] duration-300 ${isOpen ? "max-md:w-full" : "max-md:w-0"}`}
       >
         <XIcon
           className="md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer"
@@ -79,7 +79,7 @@ const Navbar = () => {
           <UserButton>
             <UserButton.MenuItems>
               <UserButton.Action
-              onClick={()=> navigate('/my-bookings')}
+                onClick={() => navigate("/my-bookings")}
                 label="My Bookings"
                 labelIcon={<TicketPlus width={15} />}
               />
