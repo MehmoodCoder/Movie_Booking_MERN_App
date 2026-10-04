@@ -7,7 +7,7 @@ import MovieDetails from "./pages/MovieDetails";
 import SeatLayout from "./pages/SeatLayout";
 import MyBookings from "./pages/MyBookings";
 import Favorite from "./pages/Favorite";
-import { Toaster, toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import Footer from "./components/Footer";
 
 function App() {
