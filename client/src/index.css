@@ -1,3 +1,20 @@
 @import "tailwindcss";
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+
+@theme {
+    --color-primary: #f84565;
+    --color-primary-dull: #d63854;    
+}
+
+*{
+    font-family: 'Outfit', 'sans-serif';
+    scrollbar-width: thin;
+    scrollbar-color: #787777 #131212;
+}
+
+body{
+    color: aliceblue;
+    background-color: #09090b;
+}
