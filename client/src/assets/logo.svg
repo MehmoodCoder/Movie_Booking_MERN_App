@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 90" width="100%" height="100%">
+  <!-- Transparent Background -->
+
+  <!-- Icon Section: Clean White & Red Outline Film Projector & Reel Design matching the reference style -->
+  <g transform="translate(15, 12)">
+    <!-- Projector Body Outline -->
+    <rect x="2" y="24" width="38" height="26" rx="5" fill="none" stroke="#ffffff" stroke-width="3"/>
+    <!-- Front Lens / Nozzle -->
+    <path d="M 40 28 L 48 24 L 48 46 L 40 42 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Top Film Reel Outline -->
+    <circle cx="21" cy="13" r="10" fill="none" stroke="#c41c2e" stroke-width="3"/>
+    <circle cx="21" cy="13" r="3" fill="#ffffff"/>
+    <line x1="21" y1="23" x2="21" y2="16" stroke="#ffffff" stroke-width="3"/>
+    <!-- Play symbol inside body -->
+    <polygon points="15,31 27,37 15,43" fill="#c41c2e"/>
+    <!-- Base stand line -->
+    <line x1="0" y1="54" x2="46" y2="54" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Typography: Moviefy (Red) & Hub (White) with exact style -->
+  <text x="75" y="60" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="42" font-weight="800" fill="#c41c2e" letter-spacing="0.5">
+    Moviefy<tspan fill="#ffffff">Hub</tspan>
+  </text>
+</svg>
