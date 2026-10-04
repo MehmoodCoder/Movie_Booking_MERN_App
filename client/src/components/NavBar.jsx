@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { MenuIcon, XIcon, SearchIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { MenuIcon, XIcon, SearchIcon, TicketPlus } from "lucide-react";
 import logo from "../assets/logo.svg";
 import { useUser } from "@clerk/react";
 import { useClerk, UserButton } from "@clerk/react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {user} = useUser();
-  const {openSignIn} = useClerk();
+  const { user } = useUser();
+  const { openSignIn } = useClerk();
+  const navigate = useNavigate()
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5 bg-black/80 backdrop-blur-md">
@@ -17,7 +18,7 @@ const Navbar = () => {
       </Link>
 
       <div
-        className={`max-md:fixed max-md:top-0 max-md:right-0 max-md:bottom-0 max-md:bg-black/90 max-md:z-50 flex max-md:flex-col items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/25 overflow-hidden transition-[width] duration-300 ${isOpen ? "max-md:w-full" : "max-md:w-0"}`}
+        className={`max-md:fixed max-md:top-0 max-md:right-0 max-md:bottom-0 max-md:bg-black max-md:z-50 flex max-md:flex-col items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/25 overflow-hidden transition-[width] duration-300 ${isOpen ? "max-md:w-full" : "max-md:w-0"}`}
       >
         <XIcon
           className="md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer"
@@ -68,13 +69,23 @@ const Navbar = () => {
       <div className="flex items-center gap-8">
         <SearchIcon className="max-md:hidden w-6 h-6 cursor-pointer" />
         {!user ? (
-        <button onClick={openSignIn} className="px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer">
-          Login
-        </button>
-        ):(
-          <UserButton />
+          <button
+            onClick={openSignIn}
+            className="px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer"
+          >
+            Login
+          </button>
+        ) : (
+          <UserButton>
+            <UserButton.MenuItems>
+              <UserButton.Action
+              onClick={()=> navigate('/my-bookings')}
+                label="My Bookings"
+                labelIcon={<TicketPlus width={15} />}
+              />
+            </UserButton.MenuItems>
+          </UserButton>
         )}
-        
       </div>
 
       <MenuIcon
