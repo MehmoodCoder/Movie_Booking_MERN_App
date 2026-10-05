@@ -4,11 +4,7 @@ import DateSelect from "../components/DateSelect";
 import MovieCard from "../components/MovieCard";
 import BlurCircle from "../components/BlurCircle";
 import timeFormat from "../lib/timeFormat";
-import {
-  dummyShowsData,
-  dummyDateTimeData,
-  dummyCastsData,
-} from "../assets/assets";
+import { dummyShowsData, dummyDateTimeData, dummyCastsData } from "../assets/assets";
 import Loading from "../components/Loading";
 
 import { Star, PlayCircle, Heart } from "lucide-react";
@@ -133,10 +129,7 @@ const MovieDetails = () => {
 
       <div className="flex justify-center mt-16 mb-20">
         <button
-          onClick={() => {
-            navigate("/movies");
-            scrollTo(0, 0);
-          }}
+          onClick={() => {navigate("/movies"); scrollTo(0, 0);}}
           className="px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium cursor-pointer text-white shadow-md"
         >
           Show more
