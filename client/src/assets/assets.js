@@ -19,65 +19,6 @@ export const dummyTrailers = [
 
 export const dummyCastsData = [
   {
-    name: "Milla Jovovich",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/usWnHCzbADijULREZSJ0qFM00y.jpg",
-  },
-  {
-    name: "Dave Bautista",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/snk6JiX0OoRjPtuH5VMoy6qbd32.jpg",
-  },
-  {
-    name: "Arly Jover",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/zmznPrQ9GSZwcOIUT0c3GyETwrP.jpg",
-  },
-  {
-    name: "Amara Okereke",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/nTSPtzWu6deZTjTWXHUpACVzny4.jpg",
-  },
-  {
-    name: "Fraser James",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/mGAPQG2OKTgdKfkp9YpVcSqcbgY.jpg",
-  },
-  {
-    name: "Deirdre Mullins",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/lJm89neuIVlYISEQnpGZA5kTanP.jpg",
-  },
-  {
-    name: "Sebastian Stankiewicz",
-    profile_path: "https://image.tmdb.org/t/p/original/...",
-  },
-  {
-    name: "Ian Hanmore",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/yHI4MK5atavKBD9wiJta01say1p.jpg",
-  },
-  {
-    name: "Eveline Hall",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/upQ4xUPiJIMW5rxF9AT0GrRqgJY.jpg",
-  },
-  {
-    name: "Kamila Klamut",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/usWnHCzbADijULREZSJ0qFM00y.jpg",
-  },
-  {
-    name: "Caoilinn Springall",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/uZNtbPHow1BYo74U1q1TarIrdiY.jpg",
-  },
-  {
-    name: "Jan Kowalewski",
-    profile_path:
-      "https://image.tmdb.org/t/p/original/snk6JiX0OoRjPtuH5VMoy6qbd32.jpg",
-  },
-  {
     name: "Paweł Wysocki",
     profile_path:
       "https://image.tmdb.org/t/p/original/zmznPrQ9GSZwcOIUT0c3GyETwrP.jpg",
@@ -88,10 +29,30 @@ export const dummyCastsData = [
       "https://image.tmdb.org/t/p/original/cbZrB8crWlLEDjVUoak8Liak6s.jpg",
   },
   {
-    name: "Tomasz Cymerman",
+    name: "Dave Bautista",
     profile_path:
-      "https://image.tmdb.org/t/p/original/nTSPtzWu6deZTjTWXHUpACVzny4.jpg",
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
+  {
+    name: "Arly Jover",
+    profile_path:
+      "https://image.tmdb.org/t/p/original/zmznPrQ9GSZwcOIUT0c3GyETwrP.jpg",
+  },
+  {
+    name: "Amara Okereke",
+    profile_path:
+      "https://plus.unsplash.com/premium_photo-1741902729425-adc7d8c16e7e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDU2fHx8ZW58MHx8fHx8",
+  },
+  {
+    name: "Fraser James",
+    profile_path:
+      "https://plus.unsplash.com/premium_photo-1689533448099-2dc408030f0f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDYwfHx8ZW58MHx8fHx8",
+  },
+  {
+    name: "Deirdre Mullins",
+    profile_path:
+      "https://images.unsplash.com/photo-1678282956162-f4d7e699f135?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDczfHx8ZW58MHx8fHx8",
+  }
 ];
 
 export const dummyShowsData = [
@@ -110,7 +71,8 @@ export const dummyShowsData = [
     ],
     tagline: "Part of the journey is the end.",
     vote_average: 8.241,
-    runtime: 181
+    runtime: 181,
+    casts: dummyCastsData
   },
   {
     _id: "284403",
@@ -128,7 +90,8 @@ export const dummyShowsData = [
     ],
     tagline: "No Hammer. No Problem.",
     vote_average: 7.59,
-    runtime: 130
+    runtime: 130,
+    casts: dummyCastsData
   },
   {
     _id: "284054",
@@ -146,7 +109,8 @@ export const dummyShowsData = [
     ],
     tagline: "Long live the king.",
     vote_average: 7.378,
-    runtime: 134
+    runtime: 134,
+    casts: dummyCastsData
   },
   {
     _id: "99861",
@@ -163,7 +127,8 @@ export const dummyShowsData = [
     ],
     tagline: "A new age has come.",
     vote_average: 7.279,
-    runtime: 141
+    runtime: 141,
+    casts: dummyCastsData
   },
   {
     _id: "283995",
@@ -181,7 +146,8 @@ export const dummyShowsData = [
     ],
     tagline: "Obviously.",
     vote_average: 7.62,
-    runtime: 136
+    runtime: 136,
+    casts: dummyCastsData
   },
   {
     _id: "429617",
@@ -198,7 +164,8 @@ export const dummyShowsData = [
     ],
     tagline: "It's time to step up.",
     vote_average: 7.447,
-    runtime: 129
+    runtime: 129,
+    casts: dummyCastsData
   },
   {
     _id: "284054",
@@ -216,7 +183,8 @@ export const dummyShowsData = [
     ],
     tagline: "Long live the king.",
     vote_average: 7.378,
-    runtime: 134
+    runtime: 134,
+    casts: dummyCastsData
   },
   {
     _id: "99861",
@@ -233,7 +201,8 @@ export const dummyShowsData = [
     ],
     tagline: "A new age has come.",
     vote_average: 7.279,
-    runtime: 141
+    runtime: 141,
+    casts: dummyCastsData
   }
 ];
 
