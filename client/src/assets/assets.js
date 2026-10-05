@@ -113,21 +113,75 @@ export const dummyShowsData = [
     runtime: 181
   },
   {
-    _id: "299536",
-    id: "299536",
-    title: "Avengers: Infinity War",
-    overview: "As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones.",
-    poster_path: "https://image.tmdb.org/t/p/original/7WsyChQLEftFiDOVnkv3nQU5ytg.jpg",
-    backdrop_path: "https://images.unsplash.com/photo-1657558045738-21507cf53606?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1hcnZlbHxlbnwwfHwwfHx8MA%3D%3D",
-    release_date: "2018-04-25",
+    _id: "284403",
+    id: "284403",
+    title: "Thor: Ragnarok",
+    overview: "Imprisoned on the other side of the universe, the mighty Thor finds himself in a deadly gladiatorial contest that pits him against his former ally and fellow Avenger - the Incredible Hulk.",
+    poster_path: "https://image.tmdb.org/t/p/original/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/kaIfm5ryEOwYg8mLbq8HOkPUM1c.jpg",
+    release_date: "2017-10-25",
+    genres: [
+      { id: 28, name: "Action" },
+      { id: 12, name: "Adventure" },
+      { id: 35, name: "Comedy" },
+      { id: 878, name: "Science Fiction" }
+    ],
+    tagline: "No Hammer. No Problem.",
+    vote_average: 7.59,
+    runtime: 130
+  },
+  {
+    _id: "284054",
+    id: "284054",
+    title: "Black Panther",
+    overview: "King T'Challa returns home to the reclusive, technologically advanced African nation of Wakanda to serve as his country's new leader. However, T'Challa soon finds that he is challenged for the throne by factions within his own country.",
+    poster_path: "https://image.tmdb.org/t/p/original/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/6ELJEzQJ3Y45HczvreC3dg0GV5R.jpg",
+    release_date: "2018-02-13",
+    genres: [
+      { id: 28, name: "Action" },
+      { id: 12, name: "Adventure" },
+      { id: 14, name: "Fantasy" },
+      { id: 878, name: "Science Fiction" }
+    ],
+    tagline: "Long live the king.",
+    vote_average: 7.378,
+    runtime: 134
+  },
+  {
+    _id: "99861",
+    id: "99861",
+    title: "Avengers: Age of Ultron",
+    overview: "When Tony Stark tries to jumpstart a dormant peacekeeping program, things go awry and Earth's Mightiest Heroes, including Iron Man, Captain America, Thor, The Incredible Hulk, Black Widow and Hawkeye, are put to the ultimate test as the fate of the planet hangs in the balance.",
+    poster_path: "https://image.tmdb.org/t/p/original/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/87iItOGgXnTrTUEi7vLUnvJ4B2z.jpg",
+    release_date: "2015-04-22",
+    genres: [
+      { id: 28, name: "Action" },
+      { id: 12, name: "Adventure" },
+      { id: 878, name: "Science Fiction" }
+    ],
+    tagline: "A new age has come.",
+    vote_average: 7.279,
+    runtime: 141
+  },
+  {
+    _id: "283995",
+    id: "283995",
+    title: "Guardians of the Galaxy Vol. 2",
+    overview: "The Guardians must fight to keep their newfound family together as they unravel the mysteries of Peter Quill's true parentage.",
+    poster_path: "https://image.tmdb.org/t/p/original/yFihWxQcmqcaBR31QM6Y8gT6aYV.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/aJn9XvGzSLLJiF6s6JX8xBVvznW.jpg",
+    release_date: "2017-04-19",
     genres: [
       { id: 12, name: "Adventure" },
       { id: 28, name: "Action" },
+      { id: 35, name: "Comedy" },
       { id: 878, name: "Science Fiction" }
     ],
-    tagline: "An entire universe. Once at peace.",
-    vote_average: 8.252,
-    runtime: 149
+    tagline: "Obviously.",
+    vote_average: 7.62,
+    runtime: 136
   },
   {
     _id: "429617",
