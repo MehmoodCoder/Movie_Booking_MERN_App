@@ -52,7 +52,21 @@ export const dummyCastsData = [
     name: "Deirdre Mullins",
     profile_path:
       "https://images.unsplash.com/photo-1678282956162-f4d7e699f135?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDczfHx8ZW58MHx8fHx8",
-  }
+  },
+  {
+    name: "Sebastian Stankiewicz",
+    profile_path: "https://images.unsplash.com/photo-1654110455429-cf322b40a906?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXZhdGFyfGVufDB8fDB8fHww",
+  },
+  {
+    name: "Ian Hanmore",
+    profile_path:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D",
+  },
+  {
+    name: "Eveline Hall",
+    profile_path:
+      "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
+  },
 ];
 
 export const dummyShowsData = [
