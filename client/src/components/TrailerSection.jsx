@@ -15,13 +15,13 @@ const TrailersSection = () => {
 
       <div className="relative max-w-[960px] mx-auto">
         <BlurCircle top="-100px" right="-100px" />
-        <div className="rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/10">
+        <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black border border-white/10">
           <ReactPlayer
-            url={currentTrailer.videoUrl}
-            controls={false}
-            className="mx-auto max-w-full"
-            width="990px"
-            height="auto"
+            src={currentTrailer.videoUrl}
+            controls
+            className="w-full h-full"
+            width="100%"
+            height="100%"
           />
         </div>
       </div>
