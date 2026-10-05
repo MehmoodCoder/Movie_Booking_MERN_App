@@ -1,4 +1,7 @@
 import React from 'react'
+import { dummyShowsData } from '../assets/assets'
+import MovieCard from '../components/MovieCard'
+import BlurCircle from '../components/BlurCircle'
 
 function Favorite() {
   return dummyShowsData.length > 0 ? (
