@@ -9,6 +9,11 @@ import MyBookings from "./pages/MyBookings";
 import Favorite from "./pages/Favorite";
 import { Toaster } from 'react-hot-toast'
 import Footer from "./components/Footer";
+import { Layout } from "lucide-react";
+import Dashboard from "./pages/admin/Dashboard";
+import AddShows from "./pages/admin/AddShows";
+import ListBookings from "./pages/admin/ListBookings";
+import ListShows from "./pages/admin/ListShows";
 
 function App() {
   const isAdminRoute = useLocation().pathname.startsWith('/admin')
@@ -23,6 +28,12 @@ function App() {
         <Route element={<SeatLayout />} path="/movies/:id/:date" />
         <Route element={<MyBookings />} path="/my-bookings" />
         <Route element={<Favorite />} path="/favorite" />
+        <Route path="/admin/*" element={<Layout/>}>
+          <Route index element={<Dashboard/>}/>
+          <Route path="add-list" element={<AddShows/>} />
+          <Route path="lsit-show" element={<ListShows/>} />
+          <Route path="list-booking" element={<ListBookings/>} />
+        </Route>
       </Routes>
       {!isAdminRoute && <Footer/>}
     </>
