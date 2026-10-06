@@ -57,12 +57,14 @@ const Dashboard = () => {
   }, []);
 
   return !loading ? (
-    <div className="">
-      <Title text1="Admin" text2="Dashboard" />
+    <div className="p-4 md:p-6 flex flex-col items-center md:items-start">
+      <div className="w-full text-center md:text-left">
+        <Title text1="Admin" text2="Dashboard" />
+      </div>
 
-      <div className="relative flex flex-wrap gap-4 mt-6">
+      <div className="relative flex flex-wrap justify-center md:justify-center gap-4 mt-6 w-full">
         <BlurCircle top="-100px" left="0" />
-        <div className="flex flex-wrap gap-4 w-full">
+        <div className="flex flex-wrap justify-center md:justify-center gap-4 w-full">
           {dashboardCards.map((card, index) => (
             <div
               key={index}
@@ -78,8 +80,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <p className="mt-10 text-lg font-medium">Active Shows</p>
-      <div className="relative flex flex-wrap gap-6 mt-4 max-w-5xl">
+      <p className="mt-10 text-lg font-medium w-full text-center md:text-left">
+        Active Shows
+      </p>
+      <div className="relative flex flex-wrap justify-center md:justify-center gap-8 mt-4 max-w-5xl w-full">
         <BlurCircle top="100px" left="-10%" />
         {dashboardData.activeShows.map((show) => (
           <div
@@ -109,8 +113,8 @@ const Dashboard = () => {
       </div>
     </div>
   ) : (
-    <Loading/>
-  )
+    <Loading />
+  );
 };
 
 export default Dashboard;
