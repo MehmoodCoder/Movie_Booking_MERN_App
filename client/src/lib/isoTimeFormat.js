@@ -6,3 +6,5 @@ const isoTimeFormat = (dateTime) => {
     hour12: true,
   });
 };
+
+export default isoTimeFormat;
