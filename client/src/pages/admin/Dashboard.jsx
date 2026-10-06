@@ -10,6 +10,7 @@ import Title from "../../components/admin/Title";
 import BlurCircle from "../../components/BlurCircle";
 import { dateFormat } from "../../lib/dateFormat";
 import { dummyDashboardData } from "../../assets/assets";
+import Loading from "../../components/Loading";
 
 const Dashboard = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -55,7 +56,7 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
-  return (
+  return !loading ? (
     <div className="">
       <Title text1="Admin" text2="Dashboard" />
 
@@ -107,7 +108,9 @@ const Dashboard = () => {
         ))}
       </div>
     </div>
-  );
+  ) : (
+    <Loading/>
+  )
 };
 
 export default Dashboard;
