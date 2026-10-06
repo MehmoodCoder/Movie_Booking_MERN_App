@@ -35,43 +35,47 @@ const ListShows = () => {
   }, []);
 
   return !loading ? (
-    <div className="p-4 md:p-6 w-full">
-      <Title text1="List" text2="Shows" />
+    <div className="p-4 md:p-6 w-full flex flex-col items-center md:items-start">
+      <div className="w-full text-center md:text-left">
+        <Title text1="List" text2="Shows" />
+      </div>
 
       <div className="max-w-4xl mt-6 w-full">
-        <div className="grid grid-cols-1 gap-4 md:hidden">
+        <div className="grid grid-cols-1 gap-4 md:hidden w-full">
           {shows.map((show, index) => (
             <div
               key={index}
-              className="bg-primary/5 border border-primary/10 rounded-lg p-4 space-y-2"
+              className="bg-primary/10 border-2 border-primary/30 rounded-lg p-4 space-y-2.5 shadow-md w-full"
             >
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Movie Name
                 </span>
-                <span className="font-medium text-right">
+                <span className="font-medium text-right text-sm">
                   {show.movie.title}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Show Time
                 </span>
-                <span className="text-sm">{dateFormat(show.showDateTime)}</span>
+                <span className="text-xs font-light">
+                  {dateFormat(show.showDateTime)}
+                </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Total Bookings
                 </span>
-                <span className="text-sm">
+                <span className="text-sm font-light">
                   {Object.keys(show.occupiedSeats).length}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center pt-1">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Earnings
                 </span>
-                <span className="text-sm font-medium">
+                <span className="text-sm font-semibold">
                   {currency}{" "}
                   {Object.keys(show.occupiedSeats).length * show.showPrice}
                 </span>
@@ -80,7 +84,7 @@ const ListShows = () => {
           ))}
         </div>
 
-        <div className="hidden md:block overflow-x-auto shadow-md rounded-md">
+        <div className="hidden md:block overflow-x-auto shadow-md rounded-md w-full">
           <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
             <thead>
               <tr className="bg-primary/20 text-left text-white">

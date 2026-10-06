@@ -26,47 +26,51 @@ const ListBookings = () => {
       </div>
 
       <div className="max-w-4xl mt-6 w-full">
-        <div className="grid grid-cols-1 gap-4 md:hidden">
+        <div className="grid grid-cols-1 gap-4 md:hidden w-full">
           {bookings.map((item, index) => (
             <div
               key={index}
-              className="bg-primary/5 border border-primary/10 rounded-lg p-4 space-y-2"
+              className="bg-primary/10 border-2 border-primary/30 rounded-lg p-4 space-y-2.5 shadow-md w-full"
             >
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   User Name
                 </span>
-                <span className="font-medium text-right">{item.user.name}</span>
+                <span className="font-medium text-right text-sm">
+                  {item.user.name}
+                </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Movie Name
                 </span>
-                <span className="text-sm text-right">
+                <span className="text-sm text-right font-light">
                   {item.show.movie.title}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Show Time
                 </span>
-                <span className="text-sm text-right">
+                <span className="text-xs text-right font-light">
                   {dateFormat(item.show.showDateTime)}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">Seats</span>
-                <span className="text-sm text-right">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
+                  Seats
+                </span>
+                <span className="text-xs text-right font-light">
                   {Object.keys(item.bookedSeats)
                     .map((seat) => item.bookedSeats[seat])
                     .join(", ")}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400 font-medium">
+              <div className="flex justify-between items-center pt-1">
+                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                   Amount
                 </span>
-                <span className="text-sm font-medium text-right">
+                <span className="text-sm font-semibold text-right">
                   {currency} {item.amount}
                 </span>
               </div>
@@ -74,7 +78,7 @@ const ListBookings = () => {
           ))}
         </div>
 
-        <div className="hidden md:block overflow-x-auto shadow-md rounded-md">
+        <div className="hidden md:block overflow-x-auto shadow-md rounded-md w-full">
           <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
             <thead>
               <tr className="bg-primary/20 text-left text-white">
