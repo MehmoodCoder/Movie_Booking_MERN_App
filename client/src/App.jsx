@@ -30,8 +30,8 @@ function App() {
         <Route element={<Favorite />} path="/favorite" />
         <Route path="/admin/*" element={<Layuot/>}>
           <Route index element={<Dashboard/>}/>
-          <Route path="add-list" element={<AddShows/>} />
-          <Route path="lsit-show" element={<ListShows/>} />
+          <Route path="add-shows" element={<AddShows/>} />
+          <Route path="list-shows" element={<ListShows/>} />
           <Route path="list-booking" element={<ListBookings/>} />
         </Route>
       </Routes>
