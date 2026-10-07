@@ -7,7 +7,7 @@ const connectDB = async () => {
     });
     await mongoose.connect(`${process.env.MONGO_URI}/moviefyhub`);
   } catch (error) {
-    console.log(error.message);
+    console.log("DB Connection Error:",error.message);
 }
 };
 
