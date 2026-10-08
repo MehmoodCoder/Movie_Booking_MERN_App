@@ -1,5 +1,5 @@
 import Show from "../models/ShowsModel.js";
-import Booking from "../model/BookingModel.js";
+import Booking from "../models/BookingModel.js";
 
 const checkSeatsAvailability = async (showId, selectedSeats) => {
   try {
