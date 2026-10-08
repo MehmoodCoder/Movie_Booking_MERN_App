@@ -1,9 +1,10 @@
-import express from 'express'
-import { getNowPlayingShows, addShow } from '../controllers/ShowsController.js'
+import express from "express";
+import { getNowPlayingShows, addShow } from "../controllers/ShowsController.js";
+import { protectAdmin } from "../middlewares/auth.js";
 
-const ShowsRouter = express.Router()
+const ShowsRouter = express.Router();
 
-ShowsRouter.get('/now-playing', getNowPlayingShows)
-ShowsRouter.post('/add', addShow)
+ShowsRouter.get("/now-playing", protectAdmin, getNowPlayingShows);
+ShowsRouter.post("/add", protectAdmin, addShow);
 
-export default ShowsRouter
+export default ShowsRouter;
