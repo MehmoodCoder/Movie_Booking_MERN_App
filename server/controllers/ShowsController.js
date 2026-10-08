@@ -58,33 +58,43 @@ export const addShow = async (req, res) => {
       };
 
       movie = await Movie.create(movieDetails);
-
     }
 
     const showsToCreate = [];
 
     showsInput.forEach((show) => {
-        const showDate = show.date;
-        show.time.forEach((time) => {
-            const dateTimeString = `${showDate}T${time}`;
-            showsToCreate.push({
-                movie: movie._id,
-                showDateTime: new Date(dateTimeString),
-                showPrice,
-                occupiedSeats: {}
-            });
+      const showDate = show.date;
+      show.time.forEach((time) => {
+        const dateTimeString = `${showDate}T${time}`;
+        showsToCreate.push({
+          movie: movie._id,
+          showDateTime: new Date(dateTimeString),
+          showPrice,
+          occupiedSeats: {},
         });
+      });
     });
 
     if (showsToCreate.length > 0) {
-
-        await Show.insertMany(showsToCreate);
+      await Show.insertMany(showsToCreate);
     }
 
-
     res.status(201).json({ success: true, message: "Show added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
+export const getShows = async (req, res) => {
+  try {
+    const shows = await Show.find({ showDateTime: { $gte: new Date() } })
+      .populate("movie")
+      .sort({ showDateTime: 1 });
 
+    const uniqueShows = new Set(shows.map((show) => show.movie));
+
+    res.status(200).json({ success: true, shows: Array.from(uniqueShows) });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
