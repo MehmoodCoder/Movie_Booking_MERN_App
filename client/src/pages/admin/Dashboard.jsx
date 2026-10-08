@@ -11,9 +11,12 @@ import BlurCircle from "../../components/BlurCircle";
 import { dateFormat } from "../../lib/dateFormat";
 import { dummyDashboardData } from "../../assets/assets";
 import Loading from "../../components/Loading";
+import { useAppContext } from "../../context/AppContext";
 
 const Dashboard = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+
+  const { axios, user, getToken, image_base_url } = useAppContext();
 
   const [dashboardData, setDashboardData] = useState({
     totalBookings: 0,
@@ -48,13 +51,28 @@ const Dashboard = () => {
   ];
 
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
-    setLoading(false);
+    try {
+      const { data } = await axios.get("/api/admin/dashboard", {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+        setLoading(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Error fetching dashboard data:", error);
+    }
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user]);
 
   return !loading ? (
     <div className="p-4 md:p-6 flex flex-col items-center md:items-start">
@@ -91,7 +109,7 @@ const Dashboard = () => {
             className="w-55 rounded-lg overflow-hidden h-full pb-3 bg-primary/10 border border-primary/20 hover:-translate-y-1 transition duration-300"
           >
             <img
-              src={show.movie.poster_path}
+              src={image_base_url + show.movie.poster_path}
               alt=""
               className="h-60 w-full object-cover"
             />
