@@ -9,8 +9,6 @@ import Loading from "../../components/Loading";
 function Layuot() {
   const { isAdmin, fetchIsAdmin } = useAppContext();
 
-  console.log(isAdmin)
-
   useEffect(() => {
     fetchIsAdmin();
   }, []);
