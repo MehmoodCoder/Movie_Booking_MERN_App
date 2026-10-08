@@ -21,14 +21,14 @@ app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware());
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
-app.use("/api/inngest", serve({ client: inngest, functions }));
-app.use("/api/show", ShowsRouter);
-app.use("api/booking", BookingRouter)
-app.use("api/admin", AdminRouter)
-app.use("api/user", UserRouter)
+    app.get("/", (req, res) => {
+    res.send("Server is running");
+    });
+    app.use("/api/inngest", serve({ client: inngest, functions }));
+    app.use("/api/show", ShowsRouter);
+    app.use("/api/booking", BookingRouter)
+    app.use("/api/admin", AdminRouter)
+    app.use("/api/user", UserRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
