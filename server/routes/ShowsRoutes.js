@@ -1,7 +1,7 @@
-import exprees from 'express'
+import express from 'express'
 import { getNowPlayingShows } from '../controllers/ShowsController.js'
 
-const ShowsRouter = exprees.Router()
+const ShowsRouter = express.Router()
 
 ShowsRouter.get('/now-playing', getNowPlayingShows)
 
