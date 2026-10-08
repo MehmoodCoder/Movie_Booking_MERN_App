@@ -33,3 +33,17 @@ export const getAllShows = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 }
+
+
+export const getAllBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({}).populate('user').populate({
+            path: "show",
+            populate: { path: "movie" }
+        }).sort({ createdAt: -1 });
+        res.json({ success: true, bookings });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
