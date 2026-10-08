@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const getNowPlayingShows = async (req, res) => {
   try {
     const { data } = await axios.get(
