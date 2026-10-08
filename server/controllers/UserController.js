@@ -1,3 +1,4 @@
+import { clerkClient } from '@clerk/express';
 import Booking from '../models/BookingModel.js'
 
 
