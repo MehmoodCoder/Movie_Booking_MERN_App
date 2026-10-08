@@ -8,6 +8,7 @@ import { clerkMiddleware } from "@clerk/express";
 import ShowsRouter from "./routes/ShowsRoutes.js";
 import BookingRouter from "./routes/BookingRoutes.js";
 import AdminRouter from "./routes/AdminRouter.js";
+import UserRouter from "./routes/UserRouter.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/show", ShowsRouter);
 app.use("api/booking", BookingRouter)
 app.use("api/admin", AdminRouter)
+app.use("api/user", UserRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
