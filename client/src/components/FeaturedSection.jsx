@@ -4,9 +4,11 @@ import { ArrowRight } from "lucide-react";
 import BlurCircle from "./BlurCircle";
 import MovieCard from "./MovieCard";
 import { dummyShowsData } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
 
 const FeaturedSection = () => {
   const navigate = useNavigate();
+  const {shows} = useAppContext()
 
   return (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 overflow-hidden">
@@ -23,7 +25,7 @@ const FeaturedSection = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-items-center gap-6 mt-8">
-        {dummyShowsData.slice(0, 3).map((show) => (
+        {shows.slice(0, 3).map((show) => (
           <MovieCard key={show._id} movie={show} />
         ))}
       </div>
