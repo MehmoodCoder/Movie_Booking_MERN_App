@@ -8,8 +8,6 @@ const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
   const {image_base_url} = useAppContext()
 
-  console.log(movie)
-
   return (
     <div className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 transition duration-300 w-full max-w-sm'>
       <img
