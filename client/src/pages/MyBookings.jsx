@@ -22,6 +22,8 @@ function MyBookings() {
       });
       if (data.success) {
         setBookings(data.bookings);
+      }else{
+        toast("Hello")
       }
     } catch (error) {
       console.log(error);
