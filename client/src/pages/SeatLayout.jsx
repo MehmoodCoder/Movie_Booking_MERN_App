@@ -73,6 +73,9 @@ const SeatLayout = () => {
     if (!selectedSeats.includes(seatId) && selectedSeats.length > 4) {
       return toast("You can only select 5 seats");
     }
+    if (occupiedSeats.includes(seatId)) {
+      return toast("This seat is already booked!");
+    }
     setSelectedSeats((prev) =>
       prev.includes(seatId)
         ? prev.filter((seat) => seat !== seatId)
