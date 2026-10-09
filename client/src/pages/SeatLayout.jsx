@@ -28,7 +28,7 @@ const SeatLayout = () => {
 
   const navigate = useNavigate();
 
-  const getShow = async () => {
+const getShow = async () => {
     try {
       const { data } = await axios.get(`/api/show/${id}`);
       if (data.success) {
@@ -36,7 +36,7 @@ const SeatLayout = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -52,10 +52,9 @@ const SeatLayout = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error(error.message);
     }
   };
-
   const bookTickets = async () => {
     try {
       if (!user) return toast.error("Please login to proceed");
