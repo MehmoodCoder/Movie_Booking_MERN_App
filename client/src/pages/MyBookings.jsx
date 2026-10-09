@@ -25,7 +25,7 @@ function MyBookings() {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error(error.message);
     }
     setIsLoading(false);
   };
