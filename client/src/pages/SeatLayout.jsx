@@ -6,7 +6,8 @@ import { ClockIcon, ArrowRightIcon } from "lucide-react";
 import isoTimeFormat from "../lib/isoTimeFormat";
 import BlurCircle from "../components/BlurCircle";
 import toast from "react-hot-toast";
-import screenImage from "../assets/screenImage.svg"
+import screenImage from "../assets/screenImage.svg";
+import { useAppContext } from "../context/AppContext";
 
 const SeatLayout = () => {
   const groupRows = [
@@ -21,22 +22,49 @@ const SeatLayout = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
+  const [occupiedSeats, setOccupiedSeats] = useState([]);
+
+  const { axios, getToken, user } = useAppContext();
 
   const navigate = useNavigate();
 
   const getShow = async () => {
-    const foundShow = dummyShowsData.find((show) => show._id === id);
-    if (foundShow) {
-      setShow({
-        movie: foundShow,
-        dateTime: dummyDateTimeData,
-      });
+    try {
+      const { data } = await axios.get(`/api/show/${id}`);
+      if (data.success) {
+        setShow(data);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error);
+    }
+  };
+
+  const getOccupiedSeats = async () => {
+    try {
+      const { data } = await axios.get(
+        `/api/booking/seats/${selectedTime.showId}`,
+      );
+      if (data.success) {
+        setOccupiedSeats(data.occupiedSeats);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
     }
   };
 
   useEffect(() => {
     getShow();
   }, [id]);
+
+  useEffect(() => {
+    if (selectedTime) {
+      getOccupiedSeats();
+    }
+  }, [selectedTime]);
 
   const handleSeatClick = (seatId) => {
     if (!selectedTime) {
@@ -63,7 +91,7 @@ const SeatLayout = () => {
               onClick={() => handleSeatClick(seatId)}
               className={`h-8 w-8 rounded border border-primary/60 cursor-pointer ${
                 selectedSeats.includes(seatId) && "bg-primary text-white"
-              }`}
+              } ${occupiedSeats.includes(seatId) && "opacity-50"}`}
             >
               {seatId}
             </button>
