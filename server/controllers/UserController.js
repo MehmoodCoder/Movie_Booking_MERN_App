@@ -13,6 +13,8 @@ export const getUserBookings = async (req, res) => {
       })
       .sort({ createdAt: -1 });
 
+      console.log(bookings)
+
     res.status(200).json({ success: true, bookings });
   } catch (error) {
     console.error(error.message);
