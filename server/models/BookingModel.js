@@ -9,7 +9,7 @@ const BookingSchema = new mongoose.Schema({
     show: {
         type: String,
         required: true,
-        ref: "Show"
+        ref: "Shows"
     },
     amount : {
         type: Number,
