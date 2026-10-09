@@ -23,7 +23,6 @@ function MyBookings() {
       if (data.success) {
         setBookings(data.bookings);
       }
-      console.log(data.bookings);
     } catch (error) {
       console.log(error);
       toast.error(error.message);
