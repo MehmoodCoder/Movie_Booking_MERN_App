@@ -4,8 +4,8 @@ import Movie from "../models/MovieModel.js";
 
 export const getUserBookings = async (req, res) => {
   try {
-    const userId = req.auth?.userId;
-    const bookings = await Booking.find({ user: userId })
+    const {userId} = req.auth();
+    const bookings = await Booking.find({ userId })
       .populate({
         path: "show",
         populate: { path: "movie" },
