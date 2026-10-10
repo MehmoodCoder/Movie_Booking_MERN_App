@@ -1,5 +1,7 @@
 import { Inngest } from "inngest";
 import User from "../models/UserModel.js";
+import Booking from "../models/BookingModel.js";
+import Show from "../models/ShowModel.js";
 
 export const inngest = new Inngest({ id: "moviefyhub" });
 
@@ -54,20 +56,22 @@ const releaseSeatsAndDeleteMapping = inngest.createFunction(
   { id: "release-seats-delete-booking" },
   { event: "app/checkpayment" },
   async ({ event, step }) => {
-    const tenMinutesLater = new Date(Date.now() + 20 * 60 * 1000);
+    const tenMinutesLater = new Date(Date.now() + 10 * 60 * 1000);
     await step.sleepUntil("wait-for-let-ten-minutes", tenMinutesLater);
 
     await step.run("check-payment-status", async () => {
       const bookingId = event.data.bookingId;
       const booking = await Booking.findById(bookingId);
 
-      if (!booking.isPaid) {
+      if (booking && !booking.isPaid) {
         const show = await Show.findById(booking.show);
-        booking.bookedSeats.forEach((seat) => {
-          delete show.occupiedSeats[seat];
-        });
-        show.markModified("occupiedSeats");
-        await show.save();
+        if (show) {
+          booking.bookedSeats.forEach((seat) => {
+            delete show.occupiedSeats[seat];
+          });
+          show.markModified("occupiedSeats");
+          await show.save();
+        }
         await Booking.findByIdAndDelete(booking._id);
       }
     });
