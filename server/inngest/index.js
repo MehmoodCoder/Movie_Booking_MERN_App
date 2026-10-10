@@ -1,14 +1,14 @@
 import { Inngest } from "inngest";
 import User from "../models/UserModel.js";
 import Booking from "../models/BookingModel.js";
-import Show from "../models/ShowModel.js";
+import Show from "../models/ShowsModel.js";
 
 export const inngest = new Inngest({ id: "moviefyhub" });
 
 const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-from-clerk",
-    triggers: { event: "clerk/user.created" },
+    event: "clerk/user.created",
   },
   async ({ event }) => {
     const { id, first_name, last_name, email_addresses, image_url } =
@@ -26,7 +26,7 @@ const syncUserCreation = inngest.createFunction(
 const syncUserDeletion = inngest.createFunction(
   {
     id: "user-deletion-from-clerk",
-    triggers: { event: "clerk/user.deleted" },
+    event: "clerk/user.deleted",
   },
   async ({ event }) => {
     const { id } = event.data;
@@ -37,7 +37,7 @@ const syncUserDeletion = inngest.createFunction(
 const syncUserUpdation = inngest.createFunction(
   {
     id: "update-user-from-clerk",
-    triggers: { event: "clerk/user.updated" },
+    event: "clerk/user.updated",
   },
   async ({ event }) => {
     const { id, first_name, last_name, email_addresses, image_url } =
@@ -53,10 +53,12 @@ const syncUserUpdation = inngest.createFunction(
 );
 
 const releaseSeatsAndDeleteMapping = inngest.createFunction(
-  { id: "release-seats-delete-booking" },
-  { event: "app/checkpayment" },
+  {
+    id: "release-seats-delete-booking",
+    event: "app/checkpayment",
+  },
   async ({ event, step }) => {
-    const tenMinutesLater = new Date(Date.now() + 10 * 60 * 1000);
+    const tenMinutesLater = new Date(Date.now() + 20 * 60 * 1000);
     await step.sleepUntil("wait-for-let-ten-minutes", tenMinutesLater);
 
     await step.run("check-payment-status", async () => {
