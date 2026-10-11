@@ -9,6 +9,7 @@ import ShowsRouter from "./routes/ShowsRoutes.js";
 import BookingRouter from "./routes/BookingRoutes.js";
 import AdminRouter from "./routes/AdminRouter.js";
 import UserRouter from "./routes/UserRouter.js";
+import TheaterAdminRouter from "./routes/TheaterAdminRouter.js";
 import { stripeWebhooks } from "./controllers/StripeWebHook.js";
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use("/api/show", ShowsRouter);
 app.use("/api/booking", BookingRouter);
 app.use("/api/admin", AdminRouter);
 app.use("/api/user", UserRouter);
+app.use("/api/user/theater-admin", TheaterAdminRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);

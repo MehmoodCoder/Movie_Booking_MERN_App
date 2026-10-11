@@ -14,6 +14,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AddShows from "./pages/admin/AddShows";
 import ListBookings from "./pages/admin/ListBookings";
 import ListShows from "./pages/admin/ListShows";
+import TheaterRequests from "./pages/admin/TheaterRequests";
 import { useAppContext } from "./context/AppContext";
 import { SignIn } from "@clerk/react";
 import Loading from "./components/Loading";
@@ -50,6 +51,7 @@ function App() {
           <Route path="add-shows" element={<AddShows />} />
           <Route path="list-shows" element={<ListShows />} />
           <Route path="list-bookings" element={<ListBookings />} />
+          <Route path="theater-requests" element={<TheaterRequests />} />
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}

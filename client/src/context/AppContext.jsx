@@ -33,8 +33,10 @@ export const AppProvider = ({ children }) => {
         navigate("/");
         toast.error("You are not autherized to access admin dashboard");
       }
+      return data.isAdmin;
     } catch (error) {
       console.error(error);
+      return false;
     }
   };
 
@@ -75,6 +77,8 @@ export const AppProvider = ({ children }) => {
     if (user) {
       fetchIsAdmin();
       fetchfavoriteMovies();
+    } else {
+      setIsAdmin(false);
     }
   }, [user]);
 

@@ -1,10 +1,16 @@
+import { clerkClient } from "@clerk/express";
 import Booking from "../models/BookingModel.js";
 import Show from "../models/ShowsModel.js";
 import User from "../models/UserModel.js";
 
 export const isAdmin = async (req, res) => {
   try {
-    res.status(200).json({ success: true, isAdmin: true });
+    const { userId } = req.auth();
+    const user = await clerkClient.users.getUser(userId);
+    res.status(200).json({
+      success: true,
+      isAdmin: user.privateMetadata.role === "admin",
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
