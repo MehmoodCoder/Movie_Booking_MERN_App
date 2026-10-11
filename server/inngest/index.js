@@ -20,7 +20,7 @@ const syncUserCreation = inngest.createFunction(
       name: first_name + " " + last_name,
       image: image_url,
     };
-    await User.create(userData)
+    await User.create(userData);
   },
 );
 
@@ -120,7 +120,7 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 const sendShowReminders = inngest.createFunction(
   {
     id: "send-show-reminders",
-    triggers:{cron: "0 */8 * * *"},
+    triggers: { cron: "0 */8 * * *" },
   },
   async ({ step }) => {
     const now = new Date();
@@ -129,7 +129,7 @@ const sendShowReminders = inngest.createFunction(
 
     const reminderTasks = await step.run("prepare-reminder-tasks", async () => {
       const shows = await Show.find({
-        showTime: { $gte: windowStart,$lte: in8Hours },
+        showTime: { $gte: windowStart, $lte: in8Hours },
       }).populate("movie");
 
       const tasks = [];
@@ -140,7 +140,9 @@ const sendShowReminders = inngest.createFunction(
         const userIds = [...new Set(Object.values(show.occupiedSeats))];
         if (userIds.length === 0) continue;
 
-        const users = await User.find({ _id: { $in: userIds } }).select("name email");
+        const users = await User.find({ _id: { $in: userIds } }).select(
+          "name email",
+        );
 
         for (const user of users) {
           tasks.push({
@@ -179,8 +181,8 @@ const sendShowReminders = inngest.createFunction(
                 <p>Enjoy the show!<br/>MoviefyHub Team</p>
               </div>
             `,
-          })
-        )
+          }),
+        ),
       );
     });
 
@@ -192,7 +194,44 @@ const sendShowReminders = inngest.createFunction(
       failed,
       message: `Sent ${sent} reminder(s), ${failed} failed.`,
     };
-  }
+  },
+);
+
+const sendNewShowNotifications = inngest.createFunction(
+  {
+    id: "send-new-show-notifications",
+    triggers: { event: "app/show.added" },
+  },
+  async ({ event }) => {
+    const { movieTitle, movieId } = event.data;
+
+    const users = await User.find({});
+
+    for (const user of users) {
+      const userEmail = user.email;
+      const userName = user.name;
+
+      const subject = `🎬 New Show Added: ${movieTitle}`;
+      const body = `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>Hi ${userName},</h2>
+          <p>We've just added a new show to our library:</p>
+          <h3 style="color: #F84565;">${movieTitle}</h3>
+          <p>Visit our website</p>
+          <br/>
+          <p>Thanks,<br/>MoviefyHub</p>
+        </div>
+      `;
+
+      await sendEmail({
+        to: userEmail,
+        subject,
+        body,
+      });
+    }
+
+    return { message: "Notifications sent." };
+  },
 );
 
 export const functions = [
@@ -202,4 +241,5 @@ export const functions = [
   releaseSeatsAndDeleteMapping,
   sendBookingConfirmationEmail,
   sendShowReminders,
+  sendNewShowNotifications
 ];
