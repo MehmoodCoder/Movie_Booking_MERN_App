@@ -90,33 +90,100 @@ Use only test card numbers with Stripe test keys. Do not use real payment detail
 
 ## 📂 Project Directory Structure
 
-```text
-Movie_Booking_MERN_App/
-├── client/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   │   └── admin/
-│   │   ├── context/
-│   │   ├── lib/
-│   │   ├── pages/
-│   │   │   └── admin/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── vite.config.js
-├── server/
-│   ├── config/
-│   ├── controllers/
-│   ├── inngest/
-│   ├── middlewares/
-│   ├── models/
-│   ├── routes/
-│   ├── package.json
-│   └── server.js
-├── .gitignore
-└── README.md
+
+**Generated:** 10/11/2026, 11:23:13 AM
+**Root Path:** `workspace\Movie_Booking_MERN_App`
+
+```
+├── 📁 client
+│   ├── 📁 public
+│   │   ├── 🖼️ HeroImg.png
+│   │   └── 🖼️ favicon.svg
+│   ├── 📁 src
+│   │   ├── 📁 assets
+│   │   │   ├── 📄 assets.js
+│   │   │   ├── 🖼️ logo.svg
+│   │   │   ├── 🖼️ marvelLogo.svg
+│   │   │   └── 🖼️ screenImage.svg
+│   │   ├── 📁 components
+│   │   │   ├── 📁 admin
+│   │   │   │   ├── 📄 AdminNavBar.jsx
+│   │   │   │   ├── 📄 AdminSideBar.jsx
+│   │   │   │   └── 📄 Title.jsx
+│   │   │   ├── 📄 BlurCircle.jsx
+│   │   │   ├── 📄 DateSelect.jsx
+│   │   │   ├── 📄 FeaturedSection.jsx
+│   │   │   ├── 📄 Footer.jsx
+│   │   │   ├── 📄 Hero.jsx
+│   │   │   ├── 📄 Loading.jsx
+│   │   │   ├── 📄 MovieCard.jsx
+│   │   │   ├── 📄 NavBar.jsx
+│   │   │   └── 📄 TrailerSection.jsx
+│   │   ├── 📁 context
+│   │   │   └── 📄 AppContext.jsx
+│   │   ├── 📁 lib
+│   │   │   ├── 📄 dateFormat.js
+│   │   │   ├── 📄 isoTimeFormat.js
+│   │   │   ├── 📄 kConverter.js
+│   │   │   └── 📄 timeFormat.js
+│   │   ├── 📁 pages
+│   │   │   ├── 📁 admin
+│   │   │   │   ├── 📄 AddShows.jsx
+│   │   │   │   ├── 📄 Dashboard.jsx
+│   │   │   │   ├── 📄 Layuot.jsx
+│   │   │   │   ├── 📄 ListBookings.jsx
+│   │   │   │   ├── 📄 ListShows.jsx
+│   │   │   │   └── 📄 TheaterRequests.jsx
+│   │   │   ├── 📄 Favorite.jsx
+│   │   │   ├── 📄 Home.jsx
+│   │   │   ├── 📄 MovieDetails.jsx
+│   │   │   ├── 📄 Movies.jsx
+│   │   │   ├── 📄 MyBookings.jsx
+│   │   │   └── 📄 SeatLayout.jsx
+│   │   ├── 📄 App.jsx
+│   │   ├── 🎨 index.css
+│   │   └── 📄 main.jsx
+│   ├── ⚙️ .gitignore
+│   ├── 📝 README.md
+│   ├── 📄 eslint.config.js
+│   ├── 🌐 index.html
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   ├── ⚙️ vercel.json
+│   └── 📄 vite.config.js
+├── 📁 server
+│   ├── 📁 config
+│   │   ├── 📄 db.js
+│   │   └── 📄 nodemailer.js
+│   ├── 📁 controllers
+│   │   ├── 📄 AdminController.js
+│   │   ├── 📄 BookingController.js
+│   │   ├── 📄 ShowsController.js
+│   │   ├── 📄 StripeWebHook.js
+│   │   ├── 📄 TheaterAdminController.js
+│   │   └── 📄 UserController.js
+│   ├── 📁 inngest
+│   │   └── 📄 index.js
+│   ├── 📁 middlewares
+│   │   └── 📄 auth.js
+│   ├── 📁 models
+│   │   ├── 📄 BookingModel.js
+│   │   ├── 📄 MovieModel.js
+│   │   ├── 📄 ShowsModel.js
+│   │   ├── 📄 TheaterAdminRequestModel.js
+│   │   └── 📄 UserModel.js
+│   ├── 📁 routes
+│   │   ├── 📄 AdminRouter.js
+│   │   ├── 📄 BookingRoutes.js
+│   │   ├── 📄 ShowsRoutes.js
+│   │   ├── 📄 TheaterAdminRouter.js
+│   │   └── 📄 UserRouter.js
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   ├── 📄 server.js
+│   └── ⚙️ vercel.json
+├── ⚙️ .gitignore
+└── 📝 README.md
 ```
 
 ---
