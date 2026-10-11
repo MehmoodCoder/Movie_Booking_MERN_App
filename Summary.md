@@ -1,4 +1,4 @@
-# MoviefyHub (QuickShow)
+# MoviefyHub 
 
 **Live Link:** [https://mh56-moviefy-hub.vercel.app](https://mh56-moviefy-hub.vercel.app)
 
