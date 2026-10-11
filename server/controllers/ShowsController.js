@@ -80,6 +80,11 @@ export const addShow = async (req, res) => {
       await Show.insertMany(showsToCreate);
     }
 
+    await inngest.send({
+      name: "app/show.added",
+      data: { movieTitle: movie.title },
+    });
+
     res.status(201).json({ success: true, message: "Show added successfully" });
   } catch (error) {
     console.error(error);
