@@ -13,6 +13,8 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMainAdmin, setIsMainAdmin] = useState(false);
+  const [isRoleLoaded, setIsRoleLoaded] = useState(false);
   const [shows, setShows] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
 
@@ -29,6 +31,8 @@ export const AppProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
       setIsAdmin(data.isAdmin);
+      setIsMainAdmin(data.isMainAdmin);
+      setIsRoleLoaded(true);
       if (!data.isAdmin && location.pathname.startsWith("/admin")) {
         navigate("/");
         toast.error("You are not autherized to access admin dashboard");
@@ -36,6 +40,7 @@ export const AppProvider = ({ children }) => {
       return data.isAdmin;
     } catch (error) {
       console.error(error);
+      setIsRoleLoaded(true);
       return false;
     }
   };
@@ -79,6 +84,8 @@ export const AppProvider = ({ children }) => {
       fetchfavoriteMovies();
     } else {
       setIsAdmin(false);
+      setIsMainAdmin(false);
+      setIsRoleLoaded(false);
     }
   }, [user]);
 
@@ -87,6 +94,8 @@ export const AppProvider = ({ children }) => {
     fetchIsAdmin,
     navigate,
     isAdmin,
+    isMainAdmin,
+    isRoleLoaded,
     setIsAdmin,
     getToken,
     user,

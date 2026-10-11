@@ -10,17 +10,21 @@ import { NavLink } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 
 const AdminSidebar = () => {
-  const { user } = useAppContext();  
+  const { user, isMainAdmin } = useAppContext();  
 
   const adminNavlinks = [
     { name: "Dashboard", path: "/admin", icon: LayoutDashboardIcon },
     { name: "Add Shows", path: "/admin/add-shows", icon: PlusSquareIcon },
     { name: "List Shows", path: "/admin/list-shows", icon: ListIcon },
-    {
-      name: "Theater Requests",
-      path: "/admin/theater-requests",
-      icon: Building2Icon,
-    },
+    ...(isMainAdmin
+      ? [
+          {
+            name: "Theater Requests",
+            path: "/admin/theater-requests",
+            icon: Building2Icon,
+          },
+        ]
+      : []),
     {
       name: "List Bookings",
       path: "/admin/list-bookings",

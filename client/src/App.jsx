@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "./components/NavBar";
-import { Route, Router, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
 import MovieDetails from "./pages/MovieDetails";
@@ -22,7 +22,7 @@ import Loading from "./components/Loading";
 function App() {
   const isAdminRoute = useLocation().pathname.startsWith("/admin");
 
-  const { user } = useAppContext();
+  const { user, isMainAdmin, isRoleLoaded } = useAppContext();
   return (
     <>
       <Toaster />
@@ -51,7 +51,18 @@ function App() {
           <Route path="add-shows" element={<AddShows />} />
           <Route path="list-shows" element={<ListShows />} />
           <Route path="list-bookings" element={<ListBookings />} />
-          <Route path="theater-requests" element={<TheaterRequests />} />
+          <Route
+            path="theater-requests"
+            element={
+              !isRoleLoaded ? (
+                <Loading />
+              ) : isMainAdmin ? (
+                <TheaterRequests />
+              ) : (
+                <Navigate to="/admin" replace />
+              )
+            }
+          />
         </Route>
       </Routes>
       {!isAdminRoute && <Footer />}

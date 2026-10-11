@@ -7,25 +7,36 @@ const theaterAdminRequestSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    email: {
+    applicantEmail: {
       type: String,
       required: true,
+    },
+    theaterName: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 120,
+    },
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 500,
+    },
+    contactPhone: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 25,
     },
     status: {
       type: String,
-      enum: ["pending_verification", "pending_approval", "approved", "rejected"],
+      enum: ["pending", "approved", "rejected"],
       required: true,
-      default: "pending_verification",
+      default: "pending",
     },
-    otpHash: String,
-    otpSalt: String,
-    otpExpiresAt: Date,
-    otpAttempts: {
-      type: Number,
-      default: 0,
-    },
-    lastOtpSentAt: Date,
-    verifiedAt: Date,
+    reviewedAt: Date,
+    reviewedBy: String,
   },
   { timestamps: true },
 );

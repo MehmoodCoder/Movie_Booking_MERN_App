@@ -7,9 +7,11 @@ export const isAdmin = async (req, res) => {
   try {
     const { userId } = req.auth();
     const user = await clerkClient.users.getUser(userId);
+    const role = user.privateMetadata.role;
     res.status(200).json({
       success: true,
-      isAdmin: user.privateMetadata.role === "admin",
+      isAdmin: role === "admin" || role === "main-admin",
+      isMainAdmin: role === "main-admin",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

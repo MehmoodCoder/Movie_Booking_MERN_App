@@ -9,9 +9,10 @@ import { useAppContext } from "../context/AppContext";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
-  const [onboardingStage, setOnboardingStage] = useState("email");
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [onboardingStage, setOnboardingStage] = useState("request");
+  const [theaterName, setTheaterName] = useState("");
+  const [address, setAddress] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
   const [onboardingError, setOnboardingError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useUser();
@@ -30,11 +31,11 @@ const Navbar = () => {
       const { data } = await axios.get("/api/user/theater-admin/status", {
         headers: await requestHeaders(),
       });
-      setEmail(data.email || user?.primaryEmailAddress?.emailAddress || "");
-      if (data.status === "pending_verification") {
-        setOnboardingStage("otp");
-      } else if (data.status === "pending_approval") {
-        setOnboardingStage("pending_approval");
+      if (data.status === "pending") {
+        setTheaterName(data.request.theaterName);
+        setAddress(data.request.address);
+        setContactPhone(data.request.contactPhone);
+        setOnboardingStage("pending");
       } else if (data.status === "approved") {
         setOnboardingStage("approved");
         if (await fetchIsAdmin()) {
@@ -42,7 +43,12 @@ const Navbar = () => {
           navigate("/admin");
         }
       } else {
-        setOnboardingStage("email");
+        if (data.request) {
+          setTheaterName(data.request.theaterName);
+          setAddress(data.request.address);
+          setContactPhone(data.request.contactPhone);
+        }
+        setOnboardingStage(data.status === "rejected" ? "rejected" : "request");
       }
     } catch (error) {
       setOnboardingError(
@@ -60,7 +66,7 @@ const Navbar = () => {
   }, [checkOnboardingStatus, isOnboardingOpen, user]);
 
   useEffect(() => {
-    if (!isOnboardingOpen || onboardingStage !== "pending_approval") return;
+    if (!isOnboardingOpen || onboardingStage !== "pending") return;
 
     const intervalId = setInterval(async () => {
       try {
@@ -75,8 +81,7 @@ const Navbar = () => {
             navigate("/admin");
           }
         } else if (data.status === "rejected") {
-          setOnboardingStage("email");
-          setOnboardingError("Your request was declined. You may submit a new request.");
+          setOnboardingStage("rejected");
         }
       } catch (error) {
         console.error(error);
@@ -93,47 +98,20 @@ const Navbar = () => {
     requestHeaders,
   ]);
 
-  const handleRequestOtp = async (event) => {
+  const handleSubmitRequest = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
     setOnboardingError("");
     try {
       const { data } = await axios.post(
-        "/api/user/theater-admin/request-otp",
-        { email },
-        { headers: await requestHeaders() },
-      );
-      if (data.status === "pending_approval") {
-        setOnboardingStage("pending_approval");
-      } else {
-        setOnboardingStage("otp");
-      }
-    } catch (error) {
-      if (error.response?.data?.status === "pending_verification") {
-        setOnboardingStage("otp");
-      }
-      setOnboardingError(
-        error.response?.data?.message || "Unable to send the verification code.",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleVerifyOtp = async (event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setOnboardingError("");
-    try {
-      const { data } = await axios.post(
-        "/api/user/theater-admin/verify-otp",
-        { otp },
+        "/api/user/theater-admin/request",
+        { theaterName, address, contactPhone },
         { headers: await requestHeaders() },
       );
       setOnboardingStage(data.status);
     } catch (error) {
       setOnboardingError(
-        error.response?.data?.message || "Unable to verify the code.",
+        error.response?.data?.message || "Unable to submit the theater request.",
       );
     } finally {
       setIsSubmitting(false);
@@ -187,7 +165,9 @@ const Navbar = () => {
             onClick={() => {
               scrollTo(0, 0);
               setIsOpen(false);
-              setEmail(user.primaryEmailAddress?.emailAddress || "");
+              setTheaterName("");
+              setAddress("");
+              setContactPhone("");
               setIsOnboardingOpen(true);
             }}
             className="cursor-pointer"
@@ -259,20 +239,51 @@ const Navbar = () => {
           <h2 className="mb-2 pr-8 text-xl font-semibold">List Your Theater</h2>
           {onboardingStage === "loading" ? (
             <p className="text-sm text-gray-300">Checking your request...</p>
-          ) : onboardingStage === "email" ? (
-            <form onSubmit={handleRequestOtp} className="space-y-4">
+          ) : onboardingStage === "request" ||
+            onboardingStage === "rejected" ? (
+            <form onSubmit={handleSubmitRequest} className="space-y-4">
+              {onboardingStage === "rejected" && (
+                <p className="text-sm text-amber-300">
+                  Your previous request was rejected. Update the details and
+                  submit a new request for review.
+                </p>
+              )}
               <p className="text-sm text-gray-300">
-                Verify your email to submit a request. An existing admin must
-                approve it before your account receives admin access.
+                Submit your theater details for review by the MainAdmin. Your
+                account will receive admin access only after approval.
               </p>
               <label className="block text-sm">
-                Email address
+                Theater name
                 <input
-                  type="email"
+                  type="text"
                   required
-                  autoComplete="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  minLength={2}
+                  maxLength={120}
+                  value={theaterName}
+                  onChange={(event) => setTheaterName(event.target.value)}
+                  className="mt-1 w-full rounded border border-gray-500 bg-black/40 px-3 py-2"
+                />
+              </label>
+              <label className="block text-sm">
+                Theater address
+                <textarea
+                  required
+                  minLength={5}
+                  maxLength={500}
+                  rows={3}
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                  className="mt-1 w-full resize-y rounded border border-gray-500 bg-black/40 px-3 py-2"
+                />
+              </label>
+              <label className="block text-sm">
+                Contact phone
+                <input
+                  type="tel"
+                  required
+                  maxLength={25}
+                  value={contactPhone}
+                  onChange={(event) => setContactPhone(event.target.value)}
                   className="mt-1 w-full rounded border border-gray-500 bg-black/40 px-3 py-2"
                 />
               </label>
@@ -281,38 +292,13 @@ const Navbar = () => {
                 disabled={isSubmitting}
                 className="w-full rounded-full bg-primary px-4 py-2 font-medium disabled:opacity-60"
               >
-                {isSubmitting ? "Sending..." : "Send verification code"}
+                {isSubmitting ? "Submitting..." : "Submit request"}
               </button>
             </form>
-          ) : onboardingStage === "otp" ? (
-            <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <p className="text-sm text-gray-300">
-                Enter the 6-digit code sent to {email}.
-              </p>
-              <input
-                type="text"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                pattern="[0-9]{6}"
-                maxLength={6}
-                required
-                value={otp}
-                onChange={(event) => setOtp(event.target.value)}
-                aria-label="6-digit verification code"
-                className="w-full rounded border border-gray-500 bg-black/40 px-3 py-2 text-center text-xl tracking-[0.5em]"
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-full bg-primary px-4 py-2 font-medium disabled:opacity-60"
-              >
-                {isSubmitting ? "Verifying..." : "Verify email"}
-              </button>
-            </form>
-          ) : onboardingStage === "pending_approval" ? (
+          ) : onboardingStage === "pending" ? (
             <p className="text-sm text-gray-300">
-              Your email is verified. Your request is waiting for approval by an
-              existing admin. This window will update when it is reviewed.
+              Your request for {theaterName} is pending MainAdmin review. This
+              window will update after it is reviewed.
             </p>
           ) : (
             <p className="text-sm text-gray-300">

@@ -1,8 +1,7 @@
 import express from "express";
 import {
   getTheaterAdminRequestStatus,
-  requestTheaterAdminOtp,
-  verifyTheaterAdminOtp,
+  submitTheaterAdminRequest,
 } from "../controllers/TheaterAdminController.js";
 import { protectUser } from "../middlewares/auth.js";
 
@@ -10,7 +9,6 @@ const TheaterAdminRouter = express.Router();
 
 TheaterAdminRouter.use(protectUser);
 TheaterAdminRouter.get("/status", getTheaterAdminRequestStatus);
-TheaterAdminRouter.post("/request-otp", requestTheaterAdminOtp);
-TheaterAdminRouter.post("/verify-otp", verifyTheaterAdminOtp);
+TheaterAdminRouter.post("/request", submitTheaterAdminRequest);
 
 export default TheaterAdminRouter;

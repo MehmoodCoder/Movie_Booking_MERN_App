@@ -71,9 +71,16 @@ const TheaterRequests = () => {
               className="flex flex-col gap-4 rounded-lg border border-primary/20 bg-primary/5 p-4 md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="font-medium">{request.email}</p>
+                <p className="font-semibold">{request.theaterName}</p>
+                <p className="mt-1 text-sm text-gray-300">
+                  {request.applicantEmail}
+                </p>
+                <p className="mt-1 text-sm text-gray-400">{request.address}</p>
                 <p className="mt-1 text-sm text-gray-400">
-                  Submitted {new Date(request.verifiedAt).toLocaleString()}
+                  Contact: {request.contactPhone}
+                </p>
+                <p className="mt-1 text-sm text-gray-400">
+                  Submitted {new Date(request.createdAt).toLocaleString()}
                 </p>
               </div>
               <div className="flex gap-3">

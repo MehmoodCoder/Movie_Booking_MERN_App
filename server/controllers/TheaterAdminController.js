@@ -1,44 +1,38 @@
 import { clerkClient } from "@clerk/express";
-import {
-  randomBytes,
-  randomInt,
-  scrypt as scryptCallback,
-  timingSafeEqual,
-} from "node:crypto";
-import { promisify } from "node:util";
 import TheaterAdminRequest from "../models/TheaterAdminRequestModel.js";
-import { sendEmail } from "../config/nodemailer.js";
 
-const scrypt = promisify(scryptCallback);
-const otpLifetimeMs = 10 * 60 * 1000;
-const otpResendDelayMs = 60 * 1000;
-const maxOtpAttempts = 5;
+const validateTheaterDetails = (body) => {
+  const theaterName =
+    typeof body.theaterName === "string" ? body.theaterName.trim() : "";
+  const address = typeof body.address === "string" ? body.address.trim() : "";
+  const contactPhone =
+    typeof body.contactPhone === "string" ? body.contactPhone.trim() : "";
 
-const hashOtp = async (otp, salt) =>
-  (await scrypt(otp, salt, 64)).toString("hex");
+  if (theaterName.length < 2 || theaterName.length > 120) {
+    return { error: "Theater name must be between 2 and 120 characters." };
+  }
+  if (address.length < 5 || address.length > 500) {
+    return { error: "Address must be between 5 and 500 characters." };
+  }
+  if (!/^[+()\d\s.-]{7,25}$/.test(contactPhone)) {
+    return { error: "Enter a valid contact phone number." };
+  }
 
-const escapeHtml = (value) =>
-  value.replace(/[&<>"']/g, (character) => {
-    const entities = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-    return entities[character];
-  });
+  return {
+    theaterDetails: { theaterName, address, contactPhone },
+  };
+};
 
 export const getTheaterAdminRequestStatus = async (req, res) => {
   try {
     const request = await TheaterAdminRequest.findOne({
       userId: req.userId,
-    }).select("email status");
+    }).select("theaterName address contactPhone applicantEmail status createdAt");
 
     res.status(200).json({
       success: true,
       status: request?.status || "none",
-      email: request?.email || "",
+      request: request || null,
     });
   } catch (error) {
     console.error(error);
@@ -46,197 +40,68 @@ export const getTheaterAdminRequestStatus = async (req, res) => {
   }
 };
 
-export const requestTheaterAdminOtp = async (req, res) => {
+export const submitTheaterAdminRequest = async (req, res) => {
   try {
-    const submittedEmail = req.body.email;
-    const email =
-      typeof submittedEmail === "string"
-        ? submittedEmail.trim().toLowerCase()
-        : "";
-    if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Enter a valid email address." });
-    }
-
     const user = await clerkClient.users.getUser(req.userId);
-    if (user.privateMetadata.role === "admin") {
+    const role = user.privateMetadata.role;
+
+    if (role === "admin" || role === "main-admin") {
       return res.status(409).json({
         success: false,
         message: "This account already has admin access.",
       });
     }
 
-    const existingRequest = await TheaterAdminRequest.findOne({
-      userId: req.userId,
-    });
-    if (existingRequest?.status === "pending_approval") {
-      return res.status(200).json({
-        success: true,
-        status: existingRequest.status,
-        message: "Your request is awaiting admin approval.",
-      });
-    }
-    if (existingRequest?.status === "approved") {
-      return res.status(409).json({
-        success: false,
-        message: "This account already has admin access.",
-      });
-    }
-    if (
-      existingRequest?.status === "pending_verification" &&
-      existingRequest.lastOtpSentAt &&
-      Date.now() - existingRequest.lastOtpSentAt.getTime() <
-        otpResendDelayMs
-    ) {
-      return res.status(429).json({
-        success: false,
-        status: "pending_verification",
-        message: "A verification code was sent recently. Please check your email.",
-      });
-    }
-
-    const otp = String(randomInt(0, 1_000_000)).padStart(6, "0");
-    const otpSalt = randomBytes(16).toString("hex");
-    const otpHash = await hashOtp(otp, otpSalt);
-    const now = new Date();
-    const request =
-      existingRequest || new TheaterAdminRequest({ userId: req.userId });
-
-    request.email = email;
-    request.status = "pending_verification";
-    request.otpHash = otpHash;
-    request.otpSalt = otpSalt;
-    request.otpExpiresAt = new Date(now.getTime() + otpLifetimeMs);
-    request.otpAttempts = 0;
-    request.lastOtpSentAt = now;
-    request.verifiedAt = undefined;
-    await request.save();
-
-    try {
-      await sendEmail({
-        to: email,
-        subject: "Your theater admin verification code",
-        body: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-            <h2>Verify your email</h2>
-            <p>Use this code to submit your theater admin request:</p>
-            <p style="font-size: 28px; font-weight: bold; letter-spacing: 6px;">${otp}</p>
-            <p>This code expires in 10 minutes. An existing admin must approve your request before admin access is granted.</p>
-          </div>
-        `,
-      });
-    } catch (error) {
-      await TheaterAdminRequest.deleteOne({
-        _id: request._id,
-        status: "pending_verification",
-        otpHash,
-      });
-      throw error;
-    }
-
-    res.status(200).json({
-      success: true,
-      status: "pending_verification",
-      message: `A verification code was sent to ${escapeHtml(email)}.`,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const verifyTheaterAdminOtp = async (req, res) => {
-  try {
-    const otp = typeof req.body.otp === "string" ? req.body.otp.trim() : "";
-    if (!/^\d{6}$/.test(otp)) {
+    const validated = validateTheaterDetails(req.body);
+    if (validated.error) {
       return res
         .status(400)
-        .json({ success: false, message: "Enter the 6-digit verification code." });
+        .json({ success: false, message: validated.error });
     }
 
-    const request = await TheaterAdminRequest.findOne({
-      userId: req.userId,
-      status: "pending_verification",
-    });
+    const primaryEmail = user.emailAddresses.find(
+      (email) => email.id === user.primaryEmailAddressId,
+    )?.emailAddress;
+    if (!primaryEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Add a primary email address to your account before applying.",
+      });
+    }
+
+    let request = await TheaterAdminRequest.findOne({ userId: req.userId });
+    if (request?.status === "pending") {
+      return res.status(409).json({
+        success: false,
+        status: request.status,
+        message: "Your theater request is already awaiting review.",
+      });
+    }
+    if (request?.status === "approved") {
+      return res.status(409).json({
+        success: false,
+        status: request.status,
+        message: "This request has already been approved.",
+      });
+    }
+
     if (!request) {
-      return res.status(400).json({
-        success: false,
-        message: "Request a new verification code to continue.",
-      });
+      request = new TheaterAdminRequest({ userId: req.userId });
     }
 
-    if (!request.otpExpiresAt || request.otpExpiresAt <= new Date()) {
-      await request.deleteOne();
-      return res.status(400).json({
-        success: false,
-        message: "The verification code expired. Request a new code.",
-      });
-    }
-
-    if (request.otpAttempts >= maxOtpAttempts) {
-      await request.deleteOne();
-      return res.status(429).json({
-        success: false,
-        message: "Too many incorrect attempts. Request a new code.",
-      });
-    }
-
-    const submittedHash = Buffer.from(
-      await hashOtp(otp, request.otpSalt),
-      "hex",
-    );
-    const savedHash = Buffer.from(request.otpHash, "hex");
-    if (
-      submittedHash.length !== savedHash.length ||
-      !timingSafeEqual(submittedHash, savedHash)
-    ) {
-      const updatedRequest = await TheaterAdminRequest.findOneAndUpdate(
-        {
-          _id: request._id,
-          status: "pending_verification",
-          otpAttempts: { $lt: maxOtpAttempts },
-        },
-        { $inc: { otpAttempts: 1 } },
-        { new: true },
-      );
-      if (!updatedRequest) {
-        return res.status(429).json({
-          success: false,
-          message: "Too many incorrect attempts. Request a new code.",
-        });
-      }
-      if (updatedRequest.otpAttempts >= maxOtpAttempts) {
-        await TheaterAdminRequest.deleteOne({
-          _id: updatedRequest._id,
-          status: "pending_verification",
-          otpAttempts: { $gte: maxOtpAttempts },
-        });
-        return res.status(429).json({
-          success: false,
-          message: "Too many incorrect attempts. Request a new code.",
-        });
-      }
-      return res.status(400).json({
-        success: false,
-        message: "The verification code is incorrect.",
-      });
-    }
-
-    request.status = "pending_approval";
-    request.otpHash = undefined;
-    request.otpSalt = undefined;
-    request.otpExpiresAt = undefined;
-    request.otpAttempts = 0;
-    request.verifiedAt = new Date();
+    request.applicantEmail = primaryEmail;
+    request.theaterName = validated.theaterDetails.theaterName;
+    request.address = validated.theaterDetails.address;
+    request.contactPhone = validated.theaterDetails.contactPhone;
+    request.status = "pending";
+    request.reviewedAt = undefined;
+    request.reviewedBy = undefined;
     await request.save();
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       status: request.status,
-      message: "Email verified. Your request is awaiting admin approval.",
+      message: "Your theater request has been submitted for MainAdmin review.",
     });
   } catch (error) {
     console.error(error);
@@ -246,11 +111,11 @@ export const verifyTheaterAdminOtp = async (req, res) => {
 
 export const getTheaterAdminRequests = async (req, res) => {
   try {
-    const requests = await TheaterAdminRequest.find({
-      status: "pending_approval",
-    })
-      .select("userId email status createdAt verifiedAt")
-      .sort({ verifiedAt: 1 });
+    const requests = await TheaterAdminRequest.find({ status: "pending" })
+      .select(
+        "userId applicantEmail theaterName address contactPhone status createdAt",
+      )
+      .sort({ createdAt: 1 });
 
     res.status(200).json({ success: true, requests });
   } catch (error) {
@@ -261,7 +126,6 @@ export const getTheaterAdminRequests = async (req, res) => {
 
 export const decideTheaterAdminRequest = async (req, res) => {
   try {
-    const { requestId } = req.params;
     const { decision } = req.body;
     if (decision !== "approve" && decision !== "reject") {
       return res
@@ -269,42 +133,47 @@ export const decideTheaterAdminRequest = async (req, res) => {
         .json({ success: false, message: "Choose approve or reject." });
     }
 
-    const request = await TheaterAdminRequest.findById(requestId);
-    if (!request || request.status !== "pending_approval") {
+    const request = await TheaterAdminRequest.findOne({
+      _id: req.params.requestId,
+      status: "pending",
+    });
+    if (!request) {
       return res.status(404).json({
         success: false,
-        message: "This request is no longer awaiting approval.",
+        message: "This request is no longer pending review.",
       });
     }
     if (request.userId === req.userId) {
       return res.status(403).json({
         success: false,
-        message: "An existing admin must review this request.",
+        message: "You cannot review your own request.",
       });
     }
 
-    if (decision === "reject") {
+    if (decision === "approve") {
+      const user = await clerkClient.users.getUser(request.userId);
+      await clerkClient.users.updateUserMetadata(request.userId, {
+        privateMetadata: {
+          ...user.privateMetadata,
+          role: "admin",
+        },
+      });
+      request.status = "approved";
+    } else {
       request.status = "rejected";
-      await request.save();
-      return res.status(200).json({
-        success: true,
-        message: "The theater admin request was rejected.",
-      });
     }
 
-    const user = await clerkClient.users.getUser(request.userId);
-    await clerkClient.users.updateUserMetadata(request.userId, {
-      privateMetadata: {
-        ...user.privateMetadata,
-        role: "admin",
-      },
-    });
-
-    request.status = "approved";
+    request.reviewedAt = new Date();
+    request.reviewedBy = req.userId;
     await request.save();
+
     res.status(200).json({
       success: true,
-      message: "The user now has admin access.",
+      status: request.status,
+      message:
+        decision === "approve"
+          ? "The request was approved and the user now has admin access."
+          : "The request was rejected.",
     });
   } catch (error) {
     console.error(error);
