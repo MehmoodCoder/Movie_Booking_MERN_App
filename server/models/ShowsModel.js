@@ -19,6 +19,9 @@ const showsSchema = new mongoose.Schema(
       type: Object,
       required: true,
     },
+    createdBy: {
+      type: String,
+    },
   },
   { minimize: false },
 );

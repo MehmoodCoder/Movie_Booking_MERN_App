@@ -4,6 +4,7 @@ import Title from "../../components/admin/Title";
 import { dateFormat } from "../../lib/dateFormat";
 import Loading from "../../components/Loading";
 import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const ListShows = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -22,9 +23,11 @@ const ListShows = () => {
       });
 
       setShows(data.shows);
-      setLoading(false);
     } catch (error) {
       console.error(error);
+      toast.error(error.response?.data?.message || "Error fetching shows");
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -30,6 +30,7 @@ export const protectAdmin = async (req, res, next) => {
         .json({ success: false, message: "Unauthorized access" });
     }
     req.userId = userId;
+    req.userRole = role;
     next();
   } catch (error) {
     console.error(error);

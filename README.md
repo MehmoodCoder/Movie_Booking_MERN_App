@@ -11,7 +11,7 @@
 - **Showtime & Seat Selection:** Browse upcoming shows, select seats, and check occupied seats before creating a booking.
 - **Stripe Checkout:** Create hosted Checkout Sessions and confirm completed payments through a Stripe webhook.
 - **Booking Management:** View bookings, payment status, seat selections, and booking details.
-- **Admin Dashboard:** Manage shows and review dashboard booking and revenue data.
+- **Admin Dashboard:** Regular admins manage their own shows and review bookings and revenue associated with those shows; MainAdmin can view platform-wide shows, bookings, and revenue.
 - **MainAdmin Theater Requests:** Users can request admin access by submitting theater details. A `main-admin` can approve or reject requests; approval assigns the regular `admin` role.
 - **Background Jobs & Email:** Inngest handles Clerk user sync events, payment timeout cleanup, scheduled reminders, booking confirmations, and new-show email notifications.
 - **Responsive Interface:** React, Tailwind CSS, React Router, and React Hot Toast provide the movie browsing and booking experience.

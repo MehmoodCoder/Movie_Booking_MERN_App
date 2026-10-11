@@ -3,6 +3,18 @@ import Booking from "../models/BookingModel.js";
 import Show from "../models/ShowsModel.js";
 import User from "../models/UserModel.js";
 
+const getShowFilter = (req) =>
+  req.userRole === "main-admin" ? {} : { createdBy: req.userId };
+
+const getBookingFilter = async (req) => {
+  if (req.userRole === "main-admin") {
+    return {};
+  }
+
+  const showIds = await Show.distinct("_id", { createdBy: req.userId });
+  return { show: { $in: showIds.map(String) } };
+};
+
 export const isAdmin = async (req, res) => {
   try {
     const { userId } = req.auth();
@@ -20,17 +32,26 @@ export const isAdmin = async (req, res) => {
 
 export const getDashboardData = async (req, res) => {
   try {
-    const bookings = await Booking.find({ isPaid: true });
-    const activeShows = await Show.find({
-      showDateTime: { $gte: new Date() },
-    }).populate("movie");
-    const tototalUser = await User.countDocuments();
+    const showFilter = getShowFilter(req);
+    const bookingFilter = await getBookingFilter(req);
+    const [bookings, activeShows, totalUser] = await Promise.all([
+      Booking.find({ ...bookingFilter, isPaid: true }),
+      Show.find({
+        ...showFilter,
+        showDateTime: { $gte: new Date() },
+      })
+        .select("-createdBy")
+        .populate("movie"),
+      req.userRole === "main-admin"
+        ? User.countDocuments()
+        : Booking.distinct("user", bookingFilter).then((users) => users.length),
+    ]);
 
     const dashboardData = {
       totalBookings: bookings.length,
       totalRevenue: bookings.reduce((acc, booking) => acc + booking.amount, 0),
       activeShows,
-      tototalUser,
+      totalUser,
     };
 
     res.status(200).json({ success: true, dashboardData });
@@ -42,7 +63,11 @@ export const getDashboardData = async (req, res) => {
 
 export const getAllShows = async (req, res) => {
   try {
-    const shows = await Show.find({ showDateTime: { $gte: new Date() } })
+    const shows = await Show.find({
+      ...getShowFilter(req),
+      showDateTime: { $gte: new Date() },
+    })
+      .select("-createdBy")
       .populate("movie")
       .sort({ showDateTime: 1 });
     res.status(200).json({ success: true, shows });
@@ -54,10 +79,12 @@ export const getAllShows = async (req, res) => {
 
 export const getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({})
+    const bookingFilter = await getBookingFilter(req);
+    const bookings = await Booking.find(bookingFilter)
       .populate("user")
       .populate({
         path: "show",
+        select: "-createdBy",
         populate: { path: "movie" },
       })
       .sort({ createdAt: -1 });

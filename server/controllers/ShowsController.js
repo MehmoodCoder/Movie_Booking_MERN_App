@@ -73,6 +73,7 @@ export const addShow = async (req, res) => {
           showDateTime: new Date(dateTimeString),
           showPrice,
           occupiedSeats: {},
+          createdBy: req.userId,
         });
       });
     });
