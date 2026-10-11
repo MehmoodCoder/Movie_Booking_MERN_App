@@ -120,7 +120,7 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 const sendShowReminders = inngest.createFunction(
   {
     id: "send-show-reminders",
-    cron: "0 */8 * * *",
+    triggers:{cron: "0 */8 * * *"},
   },
   async ({ step }) => {
     const now = new Date();
