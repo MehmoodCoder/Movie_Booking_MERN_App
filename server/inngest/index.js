@@ -176,7 +176,7 @@ const sendShowReminders = inngest.createFunction(
                 </p>
                 <p>It starts in approximately <strong>8 hours</strong> - make sure you're ready!</p>
                 <br/>
-                <p>Enjoy the show!<br/>QuickShow Team</p>
+                <p>Enjoy the show!<br/>MoviefyHub Team</p>
               </div>
             `,
           })
